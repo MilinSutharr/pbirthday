@@ -478,85 +478,289 @@ body{background:#000;color:#fff;cursor:default}
 }
 @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── POLAROID PHOTOS ── */
-.polaroid-row{
-  display:flex;
-  gap:clamp(.8rem,3vw,1.8rem);
-  justify-content:center;
-  align-items:flex-end;
-  flex-wrap:wrap;
+/* ── HANGING PHOTO CARDS SERIES ── */
+.hanging-series-wrap{
   width:100%;
+  position:relative;
+  margin:0.5rem 0 1rem;
   animation:slideUp .7s cubic-bezier(.2,.8,.2,1) .3s both;
 }
-.polaroid{
-  background:#fff;
-  padding:clamp(8px,2vw,12px) clamp(8px,2vw,12px) clamp(28px,6vw,38px);
-  border-radius:4px;
-  box-shadow:
-    0 6px 20px rgba(0,0,0,.12),
-    0 1px 3px rgba(0,0,0,.08);
+
+/* Header & hints */
+.hanging-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:100%;
+  padding:0 0.4rem;
+  margin-bottom:0.2rem;
+}
+.hanging-badge{
+  font-size:0.75rem;
+  font-weight:700;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:#ff2d78;
+  display:inline-flex;
+  align-items:center;
+  gap:0.3rem;
+}
+.swipe-hint{
+  font-size:0.75rem;
+  color:#9c6c82;
+  font-weight:500;
+  animation:tapPulse 2s ease-in-out infinite;
+}
+
+/* Hanging rope with fairy lights */
+.hanging-rope{
   position:relative;
+  width:100%;
+  height:44px;
+  margin-bottom:-20px;
+  z-index:5;
+  pointer-events:none;
+}
+.rope-svg{
+  width:100%;
+  height:100%;
+  display:block;
+}
+.fairy-bulbs{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+.bulb{
+  position:absolute;
+  width:9px;
+  height:13px;
+  border-radius:50% 50% 35% 35%;
+  background:var(--c,#ffd700);
+  box-shadow:0 0 12px var(--c,#ffd700),0 0 4px #fff;
+  animation:bulbTwinkle 1.8s ease-in-out var(--dl,0s) infinite alternate;
+}
+.bulb::before{
+  content:'';
+  position:absolute;
+  top:-3px;
+  left:2px;
+  width:5px;
+  height:4px;
+  background:#5c4430;
+  border-radius:1px;
+}
+@keyframes bulbTwinkle{
+  0%{opacity:0.5;transform:scale(0.85);}
+  100%{opacity:1;transform:scale(1.15);filter:brightness(1.25);}
+}
+
+/* Navigation scroll buttons */
+.track-btn{
+  position:absolute;
+  top:55%;
+  transform:translateY(-50%);
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.92);
+  border:1px solid rgba(255,107,171,0.35);
+  color:#ff2d78;
+  font-size:1.1rem;
+  font-weight:bold;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   cursor:pointer;
-  transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .3s ease;
+  z-index:15;
+  box-shadow:0 4px 12px rgba(0,0,0,0.12);
+  transition:all 0.25s ease;
   -webkit-tap-highlight-color:transparent;
 }
-.polaroid:hover,
-.polaroid:focus{
-  box-shadow:0 16px 40px rgba(0,0,0,.18),0 2px 6px rgba(0,0,0,.1);
+.track-btn:hover{
+  background:#ff2d78;
+  color:#fff;
+  transform:translateY(-50%) scale(1.1);
+  box-shadow:0 6px 16px rgba(255,45,120,0.35);
 }
-.polaroid-1{
-  transform:rotate(-4deg);
-  flex:0 0 auto;
-}
-.polaroid-1:hover{transform:rotate(-2deg) translateY(-10px) scale(1.04);}
-.polaroid-2{
-  transform:rotate(3.5deg);
-  flex:0 0 auto;
-  margin-bottom:0;
-}
-.polaroid-2:hover{transform:rotate(1.5deg) translateY(-10px) scale(1.04);}
+.track-prev{left:-10px;}
+.track-next{right:-10px;}
 
-.polaroid img{
-  display:block;
-  width:clamp(130px,32vw,200px);
-  height:clamp(160px,40vw,250px);
-  object-fit:cover;
+/* Horizontal Track */
+.hanging-track{
+  display:flex;
+  gap:1.25rem;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  padding:36px 0.75rem 24px;
+  scroll-behavior:smooth;
+  scrollbar-width:thin;
+  scrollbar-color:#ff6bab rgba(255,180,200,0.3);
+}
+.hanging-track::-webkit-scrollbar{
+  height:5px;
+}
+.hanging-track::-webkit-scrollbar-thumb{
+  background:linear-gradient(90deg,#ff6bab,#ff2d78);
+  border-radius:6px;
+}
+
+/* Hanging Cards */
+.h-card{
+  flex:0 0 240px;
+  scroll-snap-align:center;
+  background:#ffffff;
+  border-radius:14px;
+  padding:12px 10px 14px;
+  box-shadow:0 10px 26px rgba(0,0,0,0.1),0 2px 8px rgba(233,30,140,0.08);
+  position:relative;
+  cursor:pointer;
+  transform-origin:top center;
+  transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.3s ease;
+  animation:swingCard var(--sw-dur,4s) ease-in-out var(--sw-del,0s) infinite alternate;
+  border:1px solid rgba(255,235,242,0.9);
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
+.h-card:hover{
+  animation-play-state:paused;
+  transform:rotate(0deg) translateY(-8px) scale(1.03) !important;
+  box-shadow:0 18px 38px rgba(233,30,140,0.22),0 4px 12px rgba(0,0,0,0.1);
+  z-index:10;
+}
+@keyframes swingCard{
+  0%{transform:rotate(var(--rot-s,-2deg));}
+  100%{transform:rotate(var(--rot-e,2deg));}
+}
+
+.hc-1{--rot-s:-3deg;--rot-e:1.5deg;--sw-dur:4.2s;--sw-del:0s;}
+.hc-2{--rot-s:2.2deg;--rot-e:-2deg;--sw-dur:3.8s;--sw-del:0.5s;}
+.hc-3{--rot-s:-2deg;--rot-e:2.2deg;--sw-dur:4.5s;--sw-del:0.2s;}
+.hc-4{--rot-s:2.5deg;--rot-e:-1.8deg;--sw-dur:3.9s;--sw-del:0.7s;}
+.hc-5{--rot-s:-1.8deg;--rot-e:2deg;--sw-dur:4.1s;--sw-del:0.3s;}
+
+/* Wooden Peg on top of card */
+.wooden-peg{
+  position:absolute;
+  top:-16px;
+  left:50%;
+  transform:translateX(-50%);
+  width:14px;
+  height:26px;
+  background:linear-gradient(135deg,#d4a373,#faedcd 40%,#bc6c25);
+  border-radius:3px 3px 2px 2px;
+  box-shadow:0 3px 6px rgba(0,0,0,0.3);
+  z-index:6;
+}
+.wooden-peg::before{
+  content:'';
+  position:absolute;
+  top:8px;
+  left:-2px;
+  right:-2px;
+  height:3px;
+  background:#7f4f24;
   border-radius:2px;
 }
-
-/* tape strip on polaroid */
-.tape{
+.wooden-peg::after{
+  content:'';
   position:absolute;
-  top:-10px;
-  left:50%;transform:translateX(-50%);
-  width:50px;height:20px;
-  background:rgba(255,220,100,.6);
-  border-radius:3px;
-  backdrop-filter:blur(2px);
+  bottom:100%;
+  left:50%;
+  transform:translateX(-50%);
+  width:1.5px;
+  height:14px;
+  background:#a07855;
 }
-.polaroid-2 .tape{background:rgba(255,150,180,.5);}
 
-/* polaroid label */
-.p-label{
-  position:absolute;
-  bottom:0;left:0;right:0;
-  text-align:center;
+/* Card details */
+.h-card-tag{
+  display:inline-block;
   font-family:'Dancing Script',cursive;
-  font-size:clamp(.75rem,2.5vw,1rem);
+  font-size:1.15rem;
+  font-weight:700;
   color:#e91e8c;
-  padding-bottom:clamp(6px,1.5vw,10px);
+  text-align:center;
+  width:100%;
+  margin-bottom:6px;
 }
-
-/* polaroid hearts */
-.p-heart{
+.h-img-wrap{
+  position:relative;
+  width:100%;
+  height:200px;
+  border-radius:8px;
+  overflow:hidden;
+  background:#fdf2f7;
+}
+.h-img-wrap img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform 0.4s ease;
+}
+.h-card:hover .h-img-wrap img{
+  transform:scale(1.05);
+}
+.h-zoom-tag{
   position:absolute;
-  top:-14px;right:-10px;
-  font-size:clamp(1.4rem,4vw,1.8rem);
-  animation:heartBeat 1.5s ease-in-out infinite;
-  filter:drop-shadow(0 2px 6px rgba(233,30,140,.6));
-  z-index:5;
+  bottom:8px;
+  right:8px;
+  background:rgba(0,0,0,0.55);
+  color:#fff;
+  font-size:0.68rem;
+  padding:3px 8px;
+  border-radius:20px;
+  backdrop-filter:blur(3px);
+  letter-spacing:0.5px;
+  font-weight:500;
+  transition:background 0.2s;
+}
+.h-card:hover .h-zoom-tag{
+  background:#ff2d78;
+}
+.h-card-content{
+  padding:10px 4px 4px;
+  text-align:center;
+}
+.h-wish{
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:0.84rem;
+  line-height:1.6;
+  color:#4a2d3e;
+}
+.h-sticker{
+  position:absolute;
+  bottom:-8px;
+  right:-6px;
+  font-size:1.35rem;
+  filter:drop-shadow(0 2px 5px rgba(233,30,140,0.4));
+  animation:heartBeat 2s ease-in-out infinite;
 }
 @keyframes heartBeat{0%,100%{transform:scale(1)}25%{transform:scale(1.35)}50%{transform:scale(1.1)}75%{transform:scale(1.3)}}
+
+/* Dots */
+.hanging-dots{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin-top:8px;
+}
+.h-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:rgba(233,30,140,0.25);
+  cursor:pointer;
+  transition:all 0.3s ease;
+}
+.h-dot.active{
+  width:22px;
+  border-radius:10px;
+  background:#ff2d78;
+}
 
 /* ── STICKER DECORATIONS ── */
 .sticker{
@@ -683,14 +887,44 @@ body{background:#000;color:#fff;cursor:default}
 .s7-footer span{color:#e91e8c;font-weight:600;}
 
 /* Mobile responsive for s7 */
-@media(max-width:420px){
-  .polaroid img{width:120px;height:148px;}
+@media(max-width:480px){
+  .hanging-series-wrap{
+    width:calc(100% + 1.2rem);
+    margin-left:-0.6rem;
+    margin-right:-0.6rem;
+  }
+  .hanging-track{
+    padding:34px 0.75rem 18px;
+    gap:0.9rem;
+  }
+  .h-card{
+    flex:0 0 215px;
+    padding:10px 8px 12px;
+  }
+  .h-img-wrap{
+    height:180px;
+  }
+  .h-card-tag{
+    font-size:1.05rem;
+  }
+  .h-wish{
+    font-size:0.78rem;
+    line-height:1.5;
+  }
+  .track-btn{
+    display:none; /* native touch swipe is smoother on phones */
+  }
   .card-msg{font-size:.88rem;line-height:1.8;}
   .sbal-1,.sbal-2,.sbal-3{left:-5px;}
   .sbal-4,.sbal-5,.sbal-6{right:-5px;}
 }
 @media(max-width:360px){
-  .polaroid img{width:105px;height:130px;}
+  .h-card{
+    flex:0 0 195px;
+  }
+  .h-img-wrap{
+    height:165px;
+  }
 }
 
 /* ═══════════ MOBILE RESPONSIVE ═══════════ */
@@ -949,24 +1183,120 @@ body{background:#000;color:#fff;cursor:default}
     <!-- Main title -->
     <h1 class="bd-title">Happy Birthday,<br/><span>Priyanshi!</span></h1>
 
-    <!-- Polaroid Photos -->
-    <div class="polaroid-row">
-      <!-- Photo 1: Solo -->
-      <div class="polaroid polaroid-1" onclick="openLB('priyanshi1.jpg')">
-        <div class="tape"></div>
-        <img src="priyanshi1.jpg" alt="Priyanshi" loading="lazy"/>
-        <div class="p-label">💕 Star of the Day</div>
-        <div class="p-heart">💖</div>
+    <!-- Hanging Photo Cards Garland Series (5 Cards with Individual Wishes) -->
+    <div class="hanging-series-wrap">
+      
+      <!-- Fairy lights string across the top -->
+      <div class="hanging-rope">
+        <svg class="rope-svg" viewBox="0 0 1000 60" preserveAspectRatio="none">
+          <path d="M0,20 Q125,48 250,22 Q375,50 500,24 Q625,50 750,22 Q875,48 1000,20" fill="none" stroke="#9e724a" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <div class="fairy-bulbs">
+          <span class="bulb" style="left:6%;top:18px;--c:#ffd700;--dl:0s"></span>
+          <span class="bulb" style="left:18%;top:32px;--c:#ff6bab;--dl:.4s"></span>
+          <span class="bulb" style="left:32%;top:22px;--c:#00d2ff;--dl:.8s"></span>
+          <span class="bulb" style="left:46%;top:33px;--c:#ffd700;--dl:.2s"></span>
+          <span class="bulb" style="left:60%;top:24px;--c:#f953c6;--dl:.6s"></span>
+          <span class="bulb" style="left:74%;top:32px;--c:#66ff99;--dl:.3s"></span>
+          <span class="bulb" style="left:88%;top:20px;--c:#ffd700;--dl:.7s"></span>
+        </div>
       </div>
 
-      <!-- Photo 2: With friend -->
-      <div class="polaroid polaroid-2" onclick="openLB('priyanshi2.jpg')">
-        <div class="tape"></div>
-        <img src="priyanshi2.jpg" alt="Priyanshi & friend" loading="lazy"/>
-        <div class="p-label">🌸 Beautiful Memories</div>
-        <div class="p-heart" style="animation-delay:.4s">💝</div>
+      <!-- Section Sub-header & Hint -->
+      <div class="hanging-header">
+        <span class="hanging-badge">📸 Memory Lane &amp; Wishes</span>
+        <span class="swipe-hint">👈 Swipe or tap to view 👉</span>
       </div>
-    </div>
+
+      <!-- Desktop Scroll Arrows -->
+      <button class="track-btn track-prev" onclick="scrollHanging(-1)" aria-label="Previous photo">❮</button>
+      <button class="track-btn track-next" onclick="scrollHanging(1)" aria-label="Next photo">❯</button>
+
+      <!-- Scrollable Track with 5 Hanging Cards -->
+      <div class="hanging-track" id="hangingTrack" onscroll="updateHangingDots()">
+        
+        <!-- CARD 1 -->
+        <div class="h-card hc-1" onclick="openLB('priyanshi1.jpg')">
+          <div class="wooden-peg"></div>
+          <div class="h-card-tag">✨ Star of the Day</div>
+          <div class="h-img-wrap">
+            <img src="priyanshi1.jpg" alt="Priyanshi" loading="lazy"/>
+            <span class="h-zoom-tag">🔍 Tap to zoom</span>
+          </div>
+          <div class="h-card-content">
+            <p class="h-wish">"May your year be as bright, radiant &amp; magical as your beautiful smile! Stay shining always 🌟"</p>
+          </div>
+          <span class="h-sticker">💖</span>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="h-card hc-2" onclick="openLB('priyanshi2.jpg')">
+          <div class="wooden-peg"></div>
+          <div class="h-card-tag">🌸 Beautiful Memories</div>
+          <div class="h-img-wrap">
+            <img src="priyanshi2.jpg" alt="Priyanshi &amp; Friend" loading="lazy"/>
+            <span class="h-zoom-tag">🔍 Tap to zoom</span>
+          </div>
+          <div class="h-card-content">
+            <p class="h-wish">"To all the crazy laughter, sweetest secrets &amp; moments that make life truly wonderful! 💕"</p>
+          </div>
+          <span class="h-sticker">🦋</span>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="h-card hc-3" onclick="openLB('priyanshi3.jpg')">
+          <div class="wooden-peg"></div>
+          <div class="h-card-tag">🎂 Sweet Celebrations</div>
+          <div class="h-img-wrap">
+            <img src="priyanshi3.jpg" alt="Sweet Celebrations" loading="lazy"/>
+            <span class="h-zoom-tag">🔍 Tap to zoom</span>
+          </div>
+          <div class="h-card-content">
+            <p class="h-wish">"May your life be sweeter than any birthday cake, filled with warm hugs &amp; infinite giggles! 🥳"</p>
+          </div>
+          <span class="h-sticker">✨</span>
+        </div>
+
+        <!-- CARD 4 -->
+        <div class="h-card hc-4" onclick="openLB('priyanshi4.jpg')">
+          <div class="wooden-peg"></div>
+          <div class="h-card-tag">🎈 Big Dreams &amp; Magic</div>
+          <div class="h-img-wrap">
+            <img src="priyanshi4.jpg" alt="Big Dreams" loading="lazy"/>
+            <span class="h-zoom-tag">🔍 Tap to zoom</span>
+          </div>
+          <div class="h-card-content">
+            <p class="h-wish">"Chase every dream fearlessly! You have so much magic inside you to conquer the entire world 🌈"</p>
+          </div>
+          <span class="h-sticker">💫</span>
+        </div>
+
+        <!-- CARD 5 -->
+        <div class="h-card hc-5" onclick="openLB('priyanshi5.jpg')">
+          <div class="wooden-peg"></div>
+          <div class="h-card-tag">👑 Endless Blessings</div>
+          <div class="h-img-wrap">
+            <img src="priyanshi5.jpg" alt="Endless Blessings" loading="lazy"/>
+            <span class="h-zoom-tag">🔍 Tap to zoom</span>
+          </div>
+          <div class="h-card-content">
+            <p class="h-wish">"Wishing you good health, unconditional love, peace of mind &amp; boundless happiness forever! 💐"</p>
+          </div>
+          <span class="h-sticker">🌸</span>
+        </div>
+
+      </div><!-- /hanging-track -->
+
+      <!-- Dots Indicators -->
+      <div class="hanging-dots" id="hangingDots">
+        <span class="h-dot active" onclick="scrollHangingTo(0)"></span>
+        <span class="h-dot" onclick="scrollHangingTo(1)"></span>
+        <span class="h-dot" onclick="scrollHangingTo(2)"></span>
+        <span class="h-dot" onclick="scrollHangingTo(3)"></span>
+        <span class="h-dot" onclick="scrollHangingTo(4)"></span>
+      </div>
+
+    </div><!-- /hanging-series-wrap -->
 
     <!-- Birthday Message Card -->
     <div class="bday-card">
@@ -1305,6 +1635,38 @@ document.addEventListener('click',e=>{
     document.body.appendChild(sp);setTimeout(()=>sp.remove(),800);
   }
 });
+
+/* Hanging Gallery Controls */
+function scrollHanging(dir){
+  const track=document.getElementById('hangingTrack');
+  if(!track) return;
+  const card=track.querySelector('.h-card');
+  const amount=card ? (card.offsetWidth + 20) : 250;
+  track.scrollBy({left:dir*amount,behavior:'smooth'});
+}
+function scrollHangingTo(index){
+  const track=document.getElementById('hangingTrack');
+  if(!track) return;
+  const cards=track.querySelectorAll('.h-card');
+  if(cards[index]){
+    cards[index].scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  }
+}
+function updateHangingDots(){
+  const track=document.getElementById('hangingTrack');
+  const dots=document.querySelectorAll('.h-dot');
+  if(!track || !dots.length) return;
+  const cards=track.querySelectorAll('.h-card');
+  if(!cards.length) return;
+  const trackCenter=track.scrollLeft + track.offsetWidth/2;
+  let closest=0,minDiff=Infinity;
+  cards.forEach((c,i)=>{
+    const center=c.offsetLeft + c.offsetWidth/2;
+    const diff=Math.abs(trackCenter-center);
+    if(diff<minDiff){minDiff=diff;closest=i;}
+  });
+  dots.forEach((d,i)=>d.classList.toggle('active',i===closest));
+}
 </script>
 </body>
 </html>
