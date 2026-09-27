@@ -430,13 +430,17 @@ body{background:#000;color:#fff;cursor:default}
 /* Main content wrapper */
 .card-page{
   position:relative;z-index:10;
-  max-width:700px;
+  max-width:1100px;
   width:94%;
   margin:0 auto;
   padding:clamp(1rem,4vh,2.5rem) 0 3rem;
   display:flex;flex-direction:column;
   align-items:center;
-  gap:1.4rem;
+  gap:1.5rem;
+}
+.bunting-wrap, .bs-chip, .bd-title, .bday-card, .hk-text{
+  max-width:650px;
+  width:100%;
 }
 
 /* ── BUNTING FLAGS ── */
@@ -563,105 +567,329 @@ body{background:#000;color:#fff;cursor:default}
   50%{box-shadow:0 6px 40px rgba(255,45,120,.85),0 0 0 8px rgba(255,45,120,.1)}
 }
 
-/* ═══════════════════════════════
-   PHOTO LIBRARY — MASONRY GRID
-═══════════════════════════════ */
-.photo-library{
+/* ═══════════════════════════════════════
+   POLAROID SERIES & GARLAND CHAIN
+═══════════════════════════════════════ */
+.polaroid-section{
   width:100%;
-  animation:slideUp .8s cubic-bezier(.2,.8,.2,1) .35s both;
-}
-.lib-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:1rem;
-  flex-wrap:wrap;
-  gap:.5rem;
-  padding:0 .1rem;
-}
-.lib-title{
-  font-family:'Dancing Script',cursive;
-  font-size:clamp(1.5rem,5vw,2rem);
-  font-weight:700;
-  color:#2d1a2e;
-  display:flex;
-  align-items:center;
-  gap:.35rem;
-}
-.lib-count{
-  background:linear-gradient(135deg,#ff6bab,#ff2d78);
-  color:#fff;
-  font-size:.68rem;
-  font-weight:700;
-  padding:.2rem .65rem;
-  border-radius:20px;
-  letter-spacing:1px;
-  box-shadow:0 3px 10px rgba(255,45,120,.4);
-}
-.lib-sub{
-  font-size:.72rem;
-  color:#9c6c82;
-  font-weight:500;
-  animation:tapPulse 2.5s ease-in-out infinite;
-}
-
-/* Masonry column layout */
-.lib-grid{
-  column-count:3;
-  column-gap:9px;
-}
-
-/* Each photo card in library */
-.lib-card{
-  break-inside:avoid;
-  margin-bottom:9px;
-  border-radius:13px;
-  overflow:hidden;
   position:relative;
-  cursor:pointer;
-  transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .3s ease;
-  box-shadow:0 3px 12px rgba(0,0,0,.13);
-  -webkit-tap-highlight-color:transparent;
-  user-select:none;
-  display:block;
-}
-.lib-card:active{transform:scale(.97);}
-.lib-card img{
-  width:100%;
-  display:block;
-  border-radius:13px;
-  object-fit:cover;
-  transition:transform .4s ease;
-}
-
-/* Overlay with quote — always visible subtly on mobile, full on hover desktop */
-.lib-overlay{
-  position:absolute;
-  inset:0;
-  background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.78) 100%);
-  border-radius:13px;
+  margin:1rem 0 2rem;
   display:flex;
   flex-direction:column;
+  align-items:center;
+  animation:slideUp .8s cubic-bezier(.2,.8,.2,1) .35s both;
+}
+
+/* Series Switcher Controls */
+.series-switcher{
+  display:inline-flex;
+  align-items:center;
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(10px);
+  border:1.5px solid rgba(255,107,171,.3);
+  padding:4px;
+  border-radius:50px;
+  margin-bottom:2.2rem;
+  box-shadow:0 6px 20px rgba(233,30,140,.12);
+  z-index:10;
+}
+.series-btn{
+  border:none;
+  background:transparent;
+  padding:.55rem 1.25rem;
+  border-radius:50px;
+  font-family:'Poppins',sans-serif;
+  font-size:clamp(.78rem,2.2vw,.88rem);
+  font-weight:600;
+  color:#7d4d65;
+  cursor:pointer;
+  transition:all .3s ease;
+  display:flex;
+  align-items:center;
+  gap:.45rem;
+  -webkit-tap-highlight-color:transparent;
+}
+.series-btn.active{
+  background:linear-gradient(135deg,#ff2d78,#e91e8c);
+  color:#fff;
+  box-shadow:0 4px 15px rgba(233,30,140,.4);
+}
+.series-btn:hover:not(.active){
+  background:rgba(255,230,240,.6);
+  color:#d81b60;
+}
+
+/* ── 1. HANGING GARLAND VIEW ── */
+.garland-view{
+  width:100%;
+  position:relative;
+}
+.garland-stream{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:2.6rem;
+  position:relative;
+  padding:1rem 0;
+}
+
+/* Vertical central string connecting the chain */
+.garland-stream::before{
+  content:'';
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:50%;
+  width:2px;
+  background:repeating-linear-gradient(180deg,rgba(180,120,135,.35) 0px,rgba(180,120,135,.35) 8px,transparent 8px,transparent 16px);
+  transform:translateX(-50%);
+  z-index:1;
+  pointer-events:none;
+}
+
+.polaroid-row{
+  width:100%;
+  display:flex;
+  position:relative;
+  z-index:2;
+}
+
+/* Alternating positions across the whole screen */
+.polaroid-row.pos-left{
+  justify-content:flex-start;
+  padding-left:clamp(1rem,8vw,6rem);
+}
+.polaroid-row.pos-right{
   justify-content:flex-end;
-  padding:9px 8px;
-  opacity:1;
-  transition:opacity .3s ease;
+  padding-right:clamp(1rem,8vw,6rem);
 }
-.lib-q-emoji{
-  font-size:.85rem;
-  line-height:1;
-  margin-bottom:2px;
+.polaroid-row.pos-center-left{
+  justify-content:center;
+  padding-right:clamp(1rem,15vw,12rem);
 }
-.lib-quote{
-  font-family:'Dancing Script',cursive;
-  font-size:clamp(.58rem,2vw,.75rem);
-  color:rgba(255,255,255,.95);
-  line-height:1.3;
-  text-shadow:0 1px 4px rgba(0,0,0,.6);
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical;
+.polaroid-row.pos-center-right{
+  justify-content:center;
+  padding-left:clamp(1rem,15vw,12rem);
+}
+.polaroid-row.pos-center{
+  justify-content:center;
+}
+
+/* Unit containing clip, fairy light and card */
+.polaroid-unit{
+  position:relative;
+  display:inline-block;
+}
+
+/* Diagonal twine connector from central string */
+.chain-wire{
+  position:absolute;
+  top:-26px;
+  left:50%;
+  width:2px;
+  height:28px;
+  background:linear-gradient(180deg,rgba(180,120,135,.45),rgba(140,90,105,.65));
+  transform:translateX(-50%);
+  z-index:9;
+  pointer-events:none;
+}
+
+/* Clothespin / Peg on top of polaroid */
+.p-clip{
+  position:absolute;
+  top:-14px;
+  left:50%;
+  transform:translateX(-50%);
+  width:15px;
+  height:28px;
+  background:linear-gradient(135deg,#d8ab76 0%,#b87a41 100%);
+  border-radius:3px;
+  box-shadow:0 3px 8px rgba(0,0,0,.22);
+  z-index:12;
+  pointer-events:none;
+}
+.p-clip::after{
+  content:'';
+  position:absolute;
+  top:10px;
+  left:1px;
+  right:1px;
+  height:3px;
+  background:#6e4228;
+  border-radius:1px;
+}
+
+/* Glowing Fairy Light Bulb */
+.p-fairy-light{
+  position:absolute;
+  top:-24px;
+  left:50%;
+  transform:translateX(-50%);
+  width:11px;
+  height:11px;
+  border-radius:50%;
+  background:#fff9c4;
+  box-shadow:0 0 16px 5px rgba(255,215,0,.85),0 0 6px #fff;
+  animation:bulbGlow 3s ease-in-out infinite alternate;
+  z-index:11;
+  pointer-events:none;
+}
+@keyframes bulbGlow{
+  0%{opacity:.7;transform:translateX(-50%) scale(.85);box-shadow:0 0 10px 3px rgba(255,215,0,.6);}
+  100%{opacity:1;transform:translateX(-50%) scale(1.2);box-shadow:0 0 22px 7px rgba(255,107,171,.85),0 0 6px #fff;}
+}
+
+/* ── THE POLAROID CARD (MATCHING REFERENCE IMAGE) ── */
+.polaroid-card{
+  background:#ffffff;
+  width:clamp(235px,80vw,295px);
+  border-radius:14px;
+  padding:12px 12px 18px 12px;
+  box-shadow:
+    0 14px 35px rgba(45,26,46,.13),
+    0 4px 10px rgba(0,0,0,.06),
+    0 1px 2px rgba(0,0,0,.04);
+  cursor:pointer;
+  position:relative;
+  transform:rotate(var(--rot,0deg));
+  transform-origin:top center;
+  animation:cardSway var(--sway-dur,4.5s) ease-in-out var(--sway-del,0s) infinite alternate;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .35s ease;
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
+  border:1px solid rgba(255,235,245,.85);
+}
+@keyframes cardSway{
+  0%{transform:rotate(calc(var(--rot,0deg) - 1.5deg)) translateY(0px);}
+  100%{transform:rotate(calc(var(--rot,0deg) + 1.5deg)) translateY(-8px);}
+}
+.polaroid-card:hover{
+  animation-play-state:paused;
+  transform:scale(1.08) rotate(0deg) translateY(-10px) !important;
+  box-shadow:0 25px 55px rgba(233,30,140,.28),0 8px 18px rgba(0,0,0,.12);
+  z-index:25;
+}
+.polaroid-card:active{
+  transform:scale(.97) rotate(0deg) translateY(-2px) !important;
+}
+
+/* Polaroid Photo Frame */
+.p-img-box{
+  width:100%;
+  aspect-ratio:1/1.05;
+  border-radius:8px;
   overflow:hidden;
+  background:#fdf0f5;
+  position:relative;
+  box-shadow:inset 0 0 8px rgba(0,0,0,.06);
+}
+.p-img-box img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform .5s ease;
+}
+.polaroid-card:hover .p-img-box img{
+  transform:scale(1.04);
+}
+
+/* Polaroid Caption - Matching Reference Image Typography */
+.p-caption{
+  padding:12px 6px 2px;
+  text-align:center;
+}
+.p-title{
+  font-family:'DM Serif Display','Playfair Display',serif;
+  font-size:clamp(1.15rem,3.8vw,1.38rem);
+  color:#8E2B52;
+  font-weight:700;
+  line-height:1.25;
+  margin-bottom:5px;
+  letter-spacing:.2px;
+}
+.p-quote{
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:clamp(.76rem,2.2vw,.85rem);
+  color:#6a4457;
+  line-height:1.45;
+}
+
+/* ── 2. STACKED CARDS DECK VIEW (EXACT REFERENCE IMAGE DECK) ── */
+.deck-view{
+  width:100%;
+  max-width:440px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin:1rem auto 2.5rem;
+  perspective:1000px;
+}
+.deck-stage{
+  position:relative;
+  width:clamp(260px,85vw,320px);
+  height:clamp(380px,118vw,450px);
+  margin:1rem auto 1.5rem;
+}
+.deck-card{
+  position:absolute;
+  inset:0;
+  background:#ffffff;
+  border-radius:16px;
+  padding:14px 14px 20px 14px;
+  box-shadow:0 16px 40px rgba(45,26,46,.15),0 4px 12px rgba(0,0,0,.06);
+  border:1px solid rgba(255,235,245,.9);
+  display:flex;
+  flex-direction:column;
+  cursor:pointer;
+  user-select:none;
+  transition:transform .5s cubic-bezier(.2,.8,.2,1),opacity .4s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.deck-card .p-img-box{
+  flex:1;
+  aspect-ratio:auto;
+}
+.deck-actions{
+  display:flex;
+  gap:1rem;
+  margin-top:.8rem;
+  z-index:10;
+}
+.deck-action-btn{
+  border:none;
+  background:rgba(255,255,255,.9);
+  border:1px solid rgba(255,107,171,.3);
+  padding:.65rem 1.4rem;
+  border-radius:50px;
+  font-family:'Poppins',sans-serif;
+  font-size:.85rem;
+  font-weight:600;
+  color:#7d4d65;
+  cursor:pointer;
+  transition:all .3s ease;
+  box-shadow:0 4px 12px rgba(0,0,0,.05);
+  -webkit-tap-highlight-color:transparent;
+}
+.deck-action-btn.primary{
+  background:linear-gradient(135deg,#ff2d78,#e91e8c);
+  color:#fff;
+  border-color:transparent;
+  box-shadow:0 4px 18px rgba(255,45,120,.4);
+}
+.deck-action-btn:hover{
+  transform:translateY(-2px);
+}
+.deck-action-btn:active{
+  transform:scale(.96);
+}
+.deck-hint{
+  font-size:.76rem;
+  color:#9c6c82;
+  margin-top:.7rem;
+  letter-spacing:.5px;
+  animation:tapPulse 2s ease-in-out infinite;
 }
 
 /* ── ENHANCED LIGHTBOX ── */
@@ -764,14 +992,21 @@ body{background:#000;color:#fff;cursor:default}
   .sbal-1,.sbal-2,.sbal-3{left:-5px;}
   .sbal-4,.sbal-5,.sbal-6{right:-5px;}
   .music-btn{width:50px;height:50px;font-size:1.2rem;bottom:1rem;right:1rem;}
-  .lib-grid{column-count:2;column-gap:7px;}
-  .lib-card{margin-bottom:7px;}
+  .garland-stream{gap:1.8rem;}
+  .polaroid-row.pos-left,.polaroid-row.pos-right,.polaroid-row.pos-center-left,.polaroid-row.pos-center-right{
+    padding-left:0;
+    padding-right:0;
+    justify-content:center;
+  }
+  .polaroid-row:nth-child(odd) .polaroid-unit{margin-right:14px;}
+  .polaroid-row:nth-child(even) .polaroid-unit{margin-left:14px;}
+  .polaroid-card{width:clamp(225px,85vw,285px);}
   #lb-prev,#lb-next{width:36px;height:36px;font-size:1rem;}
   #lb-inner{padding:0 40px;}
   #lightbox img{max-width:95vw;max-height:75vh;}
 }
 @media(max-width:360px){
-  .lib-grid{column-count:2;column-gap:6px;}
+  .polaroid-card{width:92vw;}
 }
 @media(max-height:500px) and (orientation:landscape){
   .s1-inner{padding:.8rem 1rem;gap:.3rem;}
@@ -981,18 +1216,39 @@ body{background:#000;color:#fff;cursor:default}
     <!-- Main title -->
     <h1 class="bd-title">Happy Birthday,<br/><span>Priyanshi!</span></h1>
 
-    <!-- ═══════ PHOTO LIBRARY — 28 Real Photos ═══════ -->
-    <div class="photo-library">
+    <!-- ═══════ POLAROID SERIES & GARLAND CHAIN ═══════ -->
+    <div class="polaroid-section" id="polaroidSection">
 
-      <div class="lib-header">
-        <div class="lib-title">📸 Our Moments <span class="lib-count">28 pics</span></div>
-        <div class="lib-sub">tap any photo 🔍</div>
+      <!-- View Switcher Controls -->
+      <div class="series-switcher">
+        <button class="series-btn active" id="btnGarland" onclick="switchSeriesView('garland')">
+          <span>🪢</span> Hanging Chain
+        </button>
+        <button class="series-btn" id="btnDeck" onclick="switchSeriesView('deck')">
+          <span>🃏</span> Stacked Series
+        </button>
       </div>
 
-      <div class="lib-grid" id="libGrid">
-        <!-- Cards injected by JS -->
+      <!-- 1. Hanging Chain View (Scattered across screen with animations) -->
+      <div class="garland-view" id="garlandView">
+        <div class="garland-stream" id="garlandStream">
+          <!-- Injected by JS -->
+        </div>
       </div>
-    </div><!-- /photo-library -->
+
+      <!-- 2. Stacked Series Deck View (Exact reference image look) -->
+      <div class="deck-view" id="deckView" style="display:none;">
+        <div class="deck-stage" id="deckStage">
+          <!-- Stacked cards injected by JS -->
+        </div>
+        <div class="deck-actions">
+          <button class="deck-action-btn" onclick="deckPrev()">❮ Previous</button>
+          <button class="deck-action-btn primary" onclick="deckNext()">Next Memory ❯</button>
+        </div>
+        <p class="deck-hint">✨ Tap top card or Next button to flip</p>
+      </div>
+
+    </div><!-- /polaroid-section -->
 
     <!-- Birthday Message Card -->
     <div class="bday-card">
@@ -1026,7 +1282,6 @@ body{background:#000;color:#fff;cursor:default}
     <button id="lb-next" aria-label="Next">&#10095;</button>
   </div>
   <div id="lb-caption"></div>
-  <div id="lb-counter"></div>
 </div>
 
 <!-- music -->
@@ -1254,7 +1509,7 @@ let s7ConfettiId;
 function initMain(){
   document.getElementById('s7').classList.add('active');
   startS7Confetti();
-  buildPhotoLibrary();
+  buildPolaroidSeries();
 }
 
 /* S7 Canvas Confetti */
@@ -1293,64 +1548,189 @@ function startS7Confetti(){
 }
 
 /* ─────────────────────────────────
-   PHOTO LIBRARY — 28 Real Photos
+   POLAROID SERIES DATA — 28 Photos
 ───────────────────────────────── */
 const photoData = [
-  { file:'images/0B97E05B-C805-4010-A614-6EFEE94CE41F.jpg', emoji:'💖', quote:'You literally glow brighter than filter mode 🌟' },
-  { file:'images/1DEEE63C-0899-4A88-8A75-13BE44F53DAC.jpg', emoji:'😂', quote:'That look when someone says "jaldi aa jao" 😏' },
-  { file:'images/1EBBA582-3A9A-4DAF-AFB4-15744552E4E4.jpg', emoji:'✨', quote:'Vibes so good, even the camera got a crush 📸' },
-  { file:'images/230B9760-3A7C-4D92-9B05-51C2B5ED3D68.jpg', emoji:'🌸', quote:'Soft, elegant, iconic — basically our girl 🌹' },
-  { file:'images/2A502E20-C8DF-4AE5-9B5C-216024CFDED2.jpg', emoji:'🎀', quote:'She said "candid" but practiced for 20 min 😂' },
-  { file:'images/4EDE2309-6431-408E-AA8B-C2BF7E7BBCD7.jpg', emoji:'🔥', quote:'Main character energy: UNLOCKED 💅' },
-  { file:'images/506B9333-1220-4A42-99D2-16FD32FFA70B.jpg', emoji:'🌈', quote:'Too pretty to be real, too real to be a dream 💭' },
-  { file:'images/62F9ED9F-A0FD-4DF6-A854-BF8CF7E1BBAF.jpg', emoji:'😍', quote:'The sun woke up early just to light this shot ☀️' },
-  { file:'images/6AF78241-6EF2-40F1-8FF1-A2CE166D927D.jpg', emoji:'💫', quote:'Ekdum unfiltered, ekdum perfect 🫶' },
-  { file:'images/759DC71C-9299-4B32-95FB-CB140415DF65.jpg', emoji:'🎉', quote:'Mood: unbothered & absolutely radiant ✨' },
-  { file:'images/7D39D96F-4BE9-435E-BD8C-4A44DB762E49.jpg', emoji:'🥳', quote:'Born to stand out, never to blend in 🌟' },
-  { file:'images/84D25988-A5CD-4403-9E04-E57D9255067B.jpg', emoji:'💐', quote:'She doesn\'t need a caption — she IS the vibe 💕' },
-  { file:'images/9A134B90-B44F-477A-AD7E-5B5398F14416.jpg', emoji:'👑', quote:'Literally the definition of "main character" 🎬' },
-  { file:'images/AC1646A5-B454-4B7F-9D8C-9FA4B177CF1A.jpg', emoji:'🦋', quote:'Happy soul, happy face, happy everything 💗' },
-  { file:'images/BE6554AC-B0E7-41D9-977F-AD21EDFFEBA8.jpg', emoji:'🌙', quote:'Even at night, she outshines the stars ⭐' },
-  { file:'images/C16811AB-718B-480E-BA5B-895CDDDAAAEB.jpg', emoji:'🎈', quote:'Koi nahi hara sakta jab smile aise ho 😄' },
-  { file:'images/C28D830C-9F7F-44B8-931A-04EFD202569C.jpg', emoji:'🌺', quote:'Rare breed — kind heart, fierce energy 🔥' },
-  { file:'images/C5BE0E4C-4A1C-4956-B0F8-3A92F80B63D1.jpg', emoji:'🍭', quote:'Sweet vibes only, no negative energy allowed 🚫' },
-  { file:'images/CC700593-0C97-4CDD-8192-37377513C482.jpg', emoji:'🌼', quote:'Sunshine mixed with a little hurricane 🌪️💛' },
-  { file:'images/CCD5196E-4F85-4E94-98DF-7A41EFB0C32D.jpg', emoji:'💃', quote:'Dancing through life like nobody\'s watching 🕺' },
-  { file:'images/DA05D594-AF38-4915-8216-88BE19C47625.jpg', emoji:'🎶', quote:'Her laugh is literally the best song ever 🎵' },
-  { file:'images/DFF2D1FB-BD55-4712-864E-A76A49EEF1A0.jpg', emoji:'🧚', quote:'Manifestation: Active. Glow up: Perpetual ✨' },
-  { file:'images/E34D4695-8630-4817-9424-60FEEB591B58.jpg', emoji:'💝', quote:'The most beautiful thing? Her genuine heart 💖' },
-  { file:'images/E3FC6768-CE8B-493C-81E1-A4413FB6F906.jpg', emoji:'🌊', quote:'Calm before the storm... or just always this cool 😎' },
-  { file:'images/E8E15D15-97EE-46D7-8588-B0596475FE81.jpg', emoji:'🎂', quote:'Another year wiser, another year gorgeous! 🥳' },
-  { file:'images/E916B338-A441-4F84-8D8E-FC582450040B.jpg', emoji:'⭐', quote:'When she walks in, the whole room gets better 💫' },
-  { file:'images/EA94E1A5-F715-4720-9665-51EA59A3D50D.jpg', emoji:'🥂', quote:'Cheers to the girl who deserves everything! 🎊' },
-  { file:'images/ED47176D-CC55-4A07-B258-5FB660C577E0.jpg', emoji:'🌹', quote:'Final chapter: She became her own happy ending 💕' },
+  { file:'images/0B97E05B-C805-4010-A614-6EFEE94CE41F.jpg', title:'Happy Birthday! 🎂', quote:'You literally glow brighter than filter mode 🌟' },
+  { file:'images/1DEEE63C-0899-4A88-8A75-13BE44F53DAC.jpg', title:'Celebrating You 🎉', quote:'That look when someone says "jaldi aa jao" 😏' },
+  { file:'images/1EBBA582-3A9A-4DAF-AFB4-15744552E4E4.jpg', title:'Pure Sunshine ☀️', quote:'Vibes so good, even the camera got a crush 📸' },
+  { file:'images/230B9760-3A7C-4D92-9B05-51C2B5ED3D68.jpg', title:'Soft & Iconic 🌸', quote:'Soft, elegant, iconic — basically our girl 🌹' },
+  { file:'images/2A502E20-C8DF-4AE5-9B5C-216024CFDED2.jpg', title:'Totally "Candid" 😂', quote:'She said "candid" but practiced for 20 min 🎀' },
+  { file:'images/4EDE2309-6431-408E-AA8B-C2BF7E7BBCD7.jpg', title:'Main Character 💅', quote:'Plot twist: She is the whole script 🔥' },
+  { file:'images/506B9333-1220-4A42-99D2-16FD32FFA70B.jpg', title:'Dream Girl 💭', quote:'Too pretty to be real, too real to be a dream 🌈' },
+  { file:'images/62F9ED9F-A0FD-4DF6-A854-BF8CF7E1BBAF.jpg', title:'Golden Hour ☀️', quote:'The sun woke up early just to light this shot 😍' },
+  { file:'images/6AF78241-6EF2-40F1-8FF1-A2CE166D927D.jpg', title:'Unfiltered Perfection 🫶', quote:'Ekdum unfiltered, ekdum 10/10 perfect 💫' },
+  { file:'images/759DC71C-9299-4B32-95FB-CB140415DF65.jpg', title:'Vibe Check Passed ✨', quote:'Mood: unbothered & absolutely radiant 🎉' },
+  { file:'images/7D39D96F-4BE9-435E-BD8C-4A44DB762E49.jpg', title:'Born To Shine 🌟', quote:'Never blend in when you were born to stand out 🥳' },
+  { file:'images/84D25988-A5CD-4403-9E04-E57D9255067B.jpg', title:'She IS The Vibe 💕', quote:'Doesn\'t need a caption — she IS the moment 💐' },
+  { file:'images/9A134B90-B44F-477A-AD7E-5B5398F14416.jpg', title:'Queen Energy 👑', quote:'No crown needed, the grace says it all 🎬' },
+  { file:'images/AC1646A5-B454-4B7F-9D8C-9FA4B177CF1A.jpg', title:'Happy Soul 🦋', quote:'Happy heart, happy face, happy everything 💗' },
+  { file:'images/BE6554AC-B0E7-41D9-977F-AD21EDFFEBA8.jpg', title:'Midnight Glow ⭐', quote:'Even at night, she outshines all the stars 🌙' },
+  { file:'images/C16811AB-718B-480E-BA5B-895CDDDAAAEB.jpg', title:'Million Dollar Smile 😄', quote:'Koi nahi hara sakta jab smile aise ho 🎈' },
+  { file:'images/C28D830C-9F7F-44B8-931A-04EFD202569C.jpg', title:'Fierce & Sweet 🌺', quote:'Rare breed — kindest heart, fiercest energy 🔥' },
+  { file:'images/C5BE0E4C-4A1C-4956-B0F8-3A92F80B63D1.jpg', title:'Pure Sweetness 🍭', quote:'Sweet vibes only, bad energies prohibited 🚫' },
+  { file:'images/CC700593-0C97-4CDD-8192-37377513C482.jpg', title:'Sunshine & Sparkle 💛', quote:'Sunshine mixed with a little dramatic hurricane 🌪️' },
+  { file:'images/CCD5196E-4F85-4E94-98DF-7A41EFB0C32D.jpg', title:'Dance Through Life 💃', quote:'Dancing through life like the whole world is her stage 🕺' },
+  { file:'images/DA05D594-AF38-4915-8216-88BE19C47625.jpg', title:'Melody Of Joy 🎵', quote:'Her laugh is officially the best track on repeat 🎶' },
+  { file:'images/DFF2D1FB-BD55-4712-864E-A76A49EEF1A0.jpg', title:'Fairy Tale Energy 🧚', quote:'Manifestation: 100%. Glow up: Continuous ✨' },
+  { file:'images/E34D4695-8630-4817-9424-60FEEB591B58.jpg', title:'Genuine Heart 💖', quote:'Prettiest face, but even prettier soul 💝' },
+  { file:'images/E3FC6768-CE8B-493C-81E1-A4413FB6F906.jpg', title:'Effortlessly Cool 😎', quote:'Just chilling, slaying, and blessing our lives 🌊' },
+  { file:'images/E8E15D15-97EE-46D7-8588-B0596475FE81.jpg', title:'Another Year Fabulous 🥳', quote:'Leveling up in beauty, wisdom, and sweetness 🎂' },
+  { file:'images/E916B338-A441-4F84-8D8E-FC582450040B.jpg', title:'Room Brightener 💫', quote:'When she walks in, the whole world turns bright ⭐' },
+  { file:'images/EA94E1A5-F715-4720-9665-51EA59A3D50D.jpg', title:'Cheers To You 🥂', quote:'Here is to the sweetest girl who deserves the world! 🎊' },
+  { file:'images/ED47176D-CC55-4A07-B258-5FB660C577E0.jpg', title:'Forever Loved 💕', quote:'Final wish: May every prayer of yours come true 🌹' },
 ];
 
 let lbCurrentIndex = 0;
+let deckIndex = 0;
+const posCycle = ['pos-left', 'pos-right', 'pos-center-left', 'pos-center-right', 'pos-left', 'pos-right', 'pos-center'];
+const rotCycle = [-4, 3.5, -2.5, 4.5, -3, 3, -1.5, 4, -4.5, 2];
 
-function buildPhotoLibrary(){
-  const grid = document.getElementById('libGrid');
-  if(!grid || grid.children.length) return;
+function buildPolaroidSeries(){
+  renderGarland();
+  renderDeck();
+}
+
+/* 1. Render Hanging Garland Chain */
+function renderGarland(){
+  const stream = document.getElementById('garlandStream');
+  if(!stream || stream.children.length) return;
   photoData.forEach((photo, i) => {
-    const card = document.createElement('div');
-    card.className = 'lib-card';
-    card.innerHTML = `
-      <img src="${photo.file}" alt="Priyanshi memory ${i+1}" loading="lazy"/>
-      <div class="lib-overlay">
-        <div class="lib-q-emoji">${photo.emoji}</div>
-        <div class="lib-quote">${photo.quote}</div>
+    const pos = posCycle[i % posCycle.length];
+    const rot = rotCycle[i % rotCycle.length];
+    const swayDur = (3.8 + (i % 5) * 0.4).toFixed(1);
+    const swayDel = ((i * 0.35) % 2.5).toFixed(1);
+
+    const row = document.createElement('div');
+    row.className = `polaroid-row ${pos}`;
+
+    row.innerHTML = `
+      <div class="polaroid-unit" style="--rot:${rot}deg; --sway-dur:${swayDur}s; --sway-del:${swayDel}s;">
+        <div class="chain-wire"></div>
+        <div class="p-fairy-light"></div>
+        <div class="p-clip"></div>
+        <div class="polaroid-card">
+          <div class="p-img-box">
+            <img src="${photo.file}" alt="${photo.title}" loading="lazy"/>
+          </div>
+          <div class="p-caption">
+            <h3 class="p-title">${photo.title}</h3>
+            <p class="p-quote">${photo.quote}</p>
+          </div>
+        </div>
       </div>`;
-    card.addEventListener('click', () => openLB(i));
-    grid.appendChild(card);
+
+    row.querySelector('.polaroid-card').addEventListener('click', () => openLB(i));
+    stream.appendChild(row);
   });
 }
 
+/* 2. Render Stacked Series Deck (Exact Reference Image View) */
+function renderDeck(){
+  const stage = document.getElementById('deckStage');
+  if(!stage) return;
+  stage.innerHTML = '';
+
+  const total = photoData.length;
+  // Render top 4 cards in stack
+  for(let offset = 3; offset >= 0; offset--){
+    const idx = (deckIndex + offset) % total;
+    const photo = photoData[idx];
+    const card = document.createElement('div');
+    card.className = 'deck-card';
+    card.id = `deck-c-${offset}`;
+
+    // Styling based on depth
+    if(offset === 0){
+      card.style.transform = 'translateY(0) scale(1) rotate(0deg)';
+      card.style.zIndex = '10';
+      card.style.boxShadow = '0 16px 45px rgba(45,26,46,0.18)';
+    } else if(offset === 1){
+      card.style.transform = 'translateY(16px) scale(0.95) rotate(-3.5deg)';
+      card.style.zIndex = '9';
+      card.style.opacity = '0.94';
+    } else if(offset === 2){
+      card.style.transform = 'translateY(32px) scale(0.90) rotate(3deg)';
+      card.style.zIndex = '8';
+      card.style.opacity = '0.85';
+    } else {
+      card.style.transform = 'translateY(46px) scale(0.85) rotate(-1.5deg)';
+      card.style.zIndex = '7';
+      card.style.opacity = '0.7';
+    }
+
+    card.innerHTML = `
+      <div class="p-img-box">
+        <img src="${photo.file}" alt="${photo.title}" loading="lazy"/>
+      </div>
+      <div class="p-caption">
+        <h3 class="p-title">${photo.title}</h3>
+        <p class="p-quote">${photo.quote}</p>
+      </div>`;
+
+    if(offset === 0){
+      card.addEventListener('click', deckNext);
+    }
+    stage.appendChild(card);
+  }
+}
+
+function deckNext(){
+  const topCard = document.getElementById('deck-c-0');
+  if(topCard){
+    topCard.style.transition = 'transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease';
+    topCard.style.transform = 'translateX(120%) rotate(24deg) scale(0.95)';
+    topCard.style.opacity = '0';
+  }
+  setTimeout(() => {
+    deckIndex = (deckIndex + 1) % photoData.length;
+    renderDeck();
+  }, 320);
+}
+
+function deckPrev(){
+  deckIndex = (deckIndex - 1 + photoData.length) % photoData.length;
+  renderDeck();
+  const topCard = document.getElementById('deck-c-0');
+  if(topCard){
+    topCard.style.transform = 'translateX(-100%) rotate(-20deg)';
+    topCard.style.opacity = '0';
+    requestAnimationFrame(() => {
+      topCard.style.transition = 'transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease';
+      topCard.style.transform = 'translateY(0) scale(1) rotate(0deg)';
+      topCard.style.opacity = '1';
+    });
+  }
+}
+
+/* Switch between Garland Chain & Stacked Series */
+function switchSeriesView(mode){
+  const garlandView = document.getElementById('garlandView');
+  const deckView = document.getElementById('deckView');
+  const btnGarland = document.getElementById('btnGarland');
+  const btnDeck = document.getElementById('btnDeck');
+  if(mode === 'garland'){
+    garlandView.style.display = 'block';
+    deckView.style.display = 'none';
+    btnGarland.classList.add('active');
+    btnDeck.classList.remove('active');
+  } else {
+    garlandView.style.display = 'none';
+    deckView.style.display = 'flex';
+    btnDeck.classList.add('active');
+    btnGarland.classList.remove('active');
+    renderDeck();
+  }
+}
+
+/* Lightbox Functions */
 function openLB(index){
   lbCurrentIndex = index;
   const photo = photoData[index];
   document.getElementById('lb-img').src = photo.file;
-  document.getElementById('lb-caption').textContent = photo.emoji + ' ' + photo.quote;
-  document.getElementById('lb-counter').textContent = (index+1) + ' / ' + photoData.length;
+  document.getElementById('lb-caption').innerHTML = `
+    <div style="font-family:'DM Serif Display',serif;font-size:1.25rem;color:#ff6bab;margin-bottom:4px;">${photo.title}</div>
+    <div style="font-family:'Playfair Display',serif;font-style:italic;color:rgba(255,255,255,0.9);font-size:0.95rem;">${photo.quote}</div>`;
   document.getElementById('lightbox').classList.add('active');
 }
 
@@ -1398,7 +1778,7 @@ mBtn.addEventListener('click',()=>{
 /* Tap burst on screen 7 */
 document.addEventListener('click',e=>{
   if(currentScreen!==7) return;
-  if(e.target.closest('#lightbox')||e.target.closest('.lib-card')) return;
+  if(e.target.closest('#lightbox')||e.target.closest('.polaroid-card')||e.target.closest('.deck-card')||e.target.closest('.series-btn')||e.target.closest('.deck-action-btn')) return;
   for(let i=0;i<6;i++){
     const sp=document.createElement('div');
     sp.textContent=pick(['🎉','✨','💖','🌸','⭐','🎈']);
